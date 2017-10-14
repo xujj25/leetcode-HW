@@ -2,7 +2,7 @@
 
 *原创文章，拒绝转载*
 
-题目来源：https://leetcode.com/problems/reorder-list/discuss/
+题目来源：https://leetcode.com/problems/reorder-list/description/
 
 ------
 
