@@ -2,6 +2,8 @@
 #include <vector>
 using namespace std;
 
+/*
+// Solution I
 class Solution {
 public:
     vector< vector<int> > subsets(vector<int>& nums) {
@@ -16,6 +18,27 @@ public:
                     temp.push_back(nums[j]);
             }
             result.push_back(temp);
+        }
+        return result;
+    }
+};
+
+*/
+
+class Solution {
+public:
+    vector< vector<int> > subsets(vector<int>& nums) {
+        vector<vector<int> > result;
+        if (nums.empty()) return result;
+        int numsSize = nums.size();
+        int i, j;
+        result.resize(1);
+        for (i = 0; i < numsSize; i++) {
+            int resultSize = result.size();
+            for (j = 0; j < resultSize; j++) {
+                result.push_back(result[j]);
+                result.back().push_back(nums[i]);
+            }
         }
         return result;
     }
