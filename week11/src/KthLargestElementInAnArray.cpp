@@ -2,6 +2,12 @@
 #include <vector>
 using namespace std;
 
+void printArr(vector<int>& arr, int len) {
+    for (int i = 0; i < len; i++)
+        cout << arr[i] << " ";
+    cout << endl;
+}
+
 class Solution {
     void heapFixDown(vector<int>& arr, int start, int end) {
         int dad = start;
@@ -20,22 +26,28 @@ class Solution {
     }
 
     void makeHeap(vector<int>& arr, int len) {
-        for (int i = len / 2 - 1; i >= 0; i--)
+        for (int i = len / 2 - 1; i >= 0; i--) {
             heapFixDown(arr, i, len - 1);
+            // printArr(arr, len);
+        }
+
+        // cout << "finish makeHeap" << endl;
     }
 
-    void heapSort(vector<int>& arr) {
-        int size = arr.size();
-        makeHeap(arr, size);
-        for (int i = size - 1; i >= 1; i--) {
+    void heapSort(vector<int>& arr, int len) {        
+        makeHeap(arr, len);
+
+        for (int i = len - 1; i >= 1; i--) {
             swap(arr[i], arr[0]);
             heapFixDown(arr, 0, i - 1);
+            // printArr(arr, len);
         }
     }
 public:
     int findKthLargest(vector<int>& nums, int k) {
-        heapSort(nums);
-        return nums[k - 1];
+        int len = nums.size();
+        heapSort(nums, len);
+        return nums[len - k];
     }
 };
 
