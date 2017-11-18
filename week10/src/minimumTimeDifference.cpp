@@ -17,7 +17,6 @@ public:
     }
 
     int getDiff(int a, int b) {
-        // cout << a << " " << b << endl;
         int t = b - a;
         if (t > 720)
             return 1440 - t;
