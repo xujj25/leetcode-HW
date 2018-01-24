@@ -54,3 +54,30 @@ int* twoSum(int* nums, int numsSize, int target) {
 ## 解题描述
 
 这道题目还是比较简单的，为了找到目标数字的下标，使用的是直接用双层循环遍历数组里面任意两个数的和，检查和是否等于给定的target。之后再返回存有所求的两个数字的下标的数组。
+
+**2018.1.24 更新：**
+
+之前这道题的做法属于暴力破解，时间复杂度还是较高的，达到了O(n^2)，查了一些资料之后发现使用哈希可以把时间复杂度降到O(n)：
+
+```cpp
+
+class Solution {
+public:
+    vector<int> twoSum(vector<int>& nums, int target) {
+        unordered_map<int, int> hash;
+        int size = nums.size();
+        vector<int> res(2);
+        for (int i = 0; i < size; i++) {
+            auto got = hash.find(target - nums[i]);
+            if (got != hash.end()) {
+                res[0] = got -> second;
+                res[1] = i;
+                return res;
+            }
+            hash[nums[i]] = i;
+        }
+    }
+};
+
+
+```
