@@ -1,7 +1,5 @@
 # Sort List题解
 
-*原创文章，拒绝转载*
-
 题目来源：https://leetcode.com/problems/sort-list/description/
 
 ------
@@ -132,3 +130,71 @@ public:
 但是实际跑出来结果却是(后提交的是用链表快排)：
 ![sortListSubmission.png](./sortListSubmission.png)
 可能因为vector底层是用数组实现的，访问速度会比链表快一些，所以就算加上了拷贝元素的时间，总体的时间复杂度还是要低于直接对链表进行快排。
+
+## 更优解法
+
+**2018.2.3更新**
+
+对链表来说，选择归并排序才是更明智的选择
+
+- 链表无法像数组一样快速随机访问元素，要求排序算法元素访问次数较少且稳定
+- 使用归并排序处理链表不需要像数组一样使用额外的内存，合并链表的时候只需要进行指针连接即可
+
+下面给出链表递归归并排序的实现：
+
+```cpp
+class Solution {
+private:
+    ListNode* merge(ListNode* head1, ListNode* head2) {
+        ListNode tempHead(0);
+        ListNode *curNode = &tempHead;
+        while (head1 && head2) {
+            if (head1 -> val <= head2 -> val) {
+                curNode -> next = head1;
+                head1 = head1 -> next;
+            } else {
+                curNode -> next = head2;
+                head2 = head2 -> next;
+            }
+            curNode = curNode -> next;
+        }
+        while (head1) {
+            curNode -> next = head1;
+            head1 = head1 -> next;
+            curNode = curNode -> next;
+        }
+        while (head2) {
+            curNode -> next = head2;
+            head2 = head2 -> next;
+            curNode = curNode -> next;
+        }
+        return tempHead.next;
+    }
+public:
+    ListNode* sortList(ListNode* head) {
+        if (!head)
+            return NULL;
+        if (head -> next == NULL)
+            return head;
+        if (head -> next -> next == NULL) {
+            if (head -> val <= head -> next -> val) {
+                return head;
+            } else {
+                ListNode *newHead = head -> next;
+                newHead -> next = head;
+                head -> next = NULL;
+                return newHead;
+            }
+        }
+        ListNode *mid = head, *tail = head;
+        while (tail && tail -> next) {
+            mid = mid -> next;
+            tail = tail -> next -> next;
+        }
+        ListNode* head2 = sortList(mid -> next);
+        mid -> next = NULL;
+        head = sortList(head);
+        return merge(head, head2);
+    }
+};
+```
